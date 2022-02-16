@@ -28,5 +28,17 @@ describe('CatsController', () => {
 
       expect(await usersController.getUser(user.id)).toBe(user);
     });
+    it('should create a user', async () => {
+      const user = {
+        name: 'Bob',
+        age: 20,
+        email: 'Bob@gmail.com',
+      };
+      jest.spyOn(usersService, 'insertUser').mockImplementation(() => user);
+
+      expect(
+        await usersController.insertUser(user.name, user.age, user.email),
+      ).toBe(user);
+    });
   });
 });
