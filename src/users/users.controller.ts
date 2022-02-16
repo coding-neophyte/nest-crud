@@ -19,8 +19,8 @@ export class UserController {
     @Body('age') age: number,
     @Body('email') email: string,
   ) {
-    const userId = this.userservice.insertUser(name, age, email);
-    return { id: userId };
+    const user = this.userservice.insertUser(name, age, email);
+    return user;
   }
   @Get()
   getAllUsers() {
