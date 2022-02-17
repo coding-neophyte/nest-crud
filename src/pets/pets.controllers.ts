@@ -20,8 +20,8 @@ export class PetController {
     @Body('name') name: string,
     @Body('color') color: string,
   ) {
-    const petId = this.petservice.insertPet(species, age, name, color);
-    return { id: petId };
+    const pet = this.petservice.insertPet(species, age, name, color);
+    return pet;
   }
 
   @Get()
