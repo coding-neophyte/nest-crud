@@ -1,7 +1,7 @@
 import { UserController } from './users.controller';
 import { UsersService } from './users.service';
 
-describe('CatsController', () => {
+describe('UsersController', () => {
   let usersController: UserController;
   let usersService: UsersService;
 
@@ -15,7 +15,7 @@ describe('CatsController', () => {
       const users = [expect.any(Number), 'Eli', 19, 'ElijahP@gmail.com'];
       jest.spyOn(usersService, 'getUsers').mockImplementation(() => users);
 
-      expect(await usersController.getAllUsers()).toBe(users);
+      expect(await usersController.getAllUsers()).toEqual(users);
     });
     it('should grab a user by id', async () => {
       const user = {
@@ -26,7 +26,7 @@ describe('CatsController', () => {
       };
       jest.spyOn(usersService, 'getUser').mockImplementation(() => user);
 
-      expect(await usersController.getUser(user.id)).toBe(user);
+      expect(await usersController.getUser(user.id)).toEqual(user);
     });
     it('should create a user', async () => {
       const user = {
@@ -38,7 +38,49 @@ describe('CatsController', () => {
 
       expect(
         await usersController.insertUser(user.name, user.age, user.email),
-      ).toBe(user);
+      ).toEqual(user);
+    });
+    it('should update existing user', async () => {
+      const user = {
+        id: expect.any(Number),
+        name: 'Bob',
+        age: 20,
+        email: 'Bob@gmail.com',
+      };
+      const updatedUser = {
+        id: expect.any(Number),
+        name: 'Bob',
+        age: 24,
+        email: 'Bob@gmail.com',
+      };
+
+      jest.spyOn(usersService, 'insertUser').mockImplementation(() => user);
+      jest
+        .spyOn(usersService, 'updateUser')
+        .mockImplementation(() => updatedUser);
+
+      expect(
+        await usersController.updateUser(
+          user.id,
+          updatedUser.name,
+          updatedUser.age,
+          updatedUser.email,
+        ),
+      ).toEqual({
+        ...updatedUser,
+      });
+    });
+    it('should delete a user', async () => {
+      const user = {
+        id: expect.any(Number),
+        name: 'Bob',
+        age: 20,
+        email: 'Bob@gmail.com',
+      };
+      jest.spyOn(usersService, 'insertUser').mockImplementation(() => user);
+      jest.spyOn(usersService, 'deleteUser').mockImplementation(() => user);
+
+      expect(await usersController.getUser(user.id)).toEqual(undefined);
     });
   });
 });
